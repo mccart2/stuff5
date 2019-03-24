@@ -1,0 +1,210 @@
+
+GccApplication1.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  00000140  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000000ec  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .comment      00000030  00000000  00000000  00000140  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000170  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000020  00000000  00000000  000001b0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   0000068c  00000000  00000000  000001d0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000607  00000000  00000000  0000085c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000240  00000000  00000000  00000e63  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000024  00000000  00000000  000010a4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000363  00000000  00000000  000010c8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000030  00000000  00000000  0000142b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000010  00000000  00000000  0000145b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   8:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  10:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  14:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  18:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  1c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  20:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  24:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  28:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  2c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  30:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  34:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  38:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  3c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  40:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  44:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  48:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  4c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  50:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  54:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  58:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  5c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  60:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  64:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+  74:	0e 94 40 00 	call	0x80	; 0x80 <main>
+  78:	0c 94 74 00 	jmp	0xe8	; 0xe8 <_exit>
+
+0000007c <__bad_interrupt>:
+  7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000080 <main>:
+
+#include <avr/io.h>
+
+int main (void)
+{
+	DDRB = _BV(PINB2); //We are setting Pin2 as output
+  80:	84 e0       	ldi	r24, 0x04	; 4
+  82:	84 b9       	out	0x04, r24	; 4
+	
+	int interrupt_counter = 0;// Sets variable for counting interrupts and initializes to zero
+	
+	OCR0A = 0xC7;// Sets our compare register to value we wish to look for 
+  84:	97 ec       	ldi	r25, 0xC7	; 199
+  86:	97 bd       	out	0x27, r25	; 39
+	
+	TCCR0A = (1<<COM0B1); //Clear on compare match
+  88:	90 e2       	ldi	r25, 0x20	; 32
+  8a:	94 bd       	out	0x24, r25	; 36
+	
+	TCCR0B = (1<<CS02) | (1<<CS00);//Setting Pre-scaler to 1024
+  8c:	95 e0       	ldi	r25, 0x05	; 5
+  8e:	95 bd       	out	0x25, r25	; 37
+	
+	TIMSK0 = (1 << OCIE0B);// Enables Compare on match
+  90:	80 93 6e 00 	sts	0x006E, r24	; 0x80006e <__TEXT_REGION_LENGTH__+0x7e006e>
+	
+		if(PINC & _BV(PINC2)) // Loop statement, upon button activation preform the following actions
+			
+			{
+				
+			PORTB = _BV(PINB2);// Sets Port B as output using _bv operation (bit value)
+  94:	64 e0       	ldi	r22, 0x04	; 4
+					
+					{
+					
+					interrupt_counter +=1; // Increments our interrupt counter
+					
+					TIFR0 = 0x01;// Resets flag to 1
+  96:	31 e0       	ldi	r19, 0x01	; 1
+	
+	while (1)// Repeating main loop
+	
+	{
+	
+		if(PINC & _BV(PINC2)) // Loop statement, upon button activation preform the following actions
+  98:	32 9b       	sbis	0x06, 2	; 6
+  9a:	24 c0       	rjmp	.+72     	; 0xe4 <main+0x64>
+			
+			{
+				
+			PORTB = _BV(PINB2);// Sets Port B as output using _bv operation (bit value)
+  9c:	65 b9       	out	0x05, r22	; 5
+			
+			interrupt_counter = 0;// Sets counter to zero
+  9e:	40 e0       	ldi	r20, 0x00	; 0
+  a0:	50 e0       	ldi	r21, 0x00	; 0
+  a2:	15 c0       	rjmp	.+42     	; 0xce <main+0x4e>
+			
+			while(interrupt_counter < 50 )// Loop for condition if counter is less than enter value (50)
+			
+				{
+					
+				if (TIFR0 & (1 << OCR0A)) // Loop condition checking for interrupt flag, and value Compare register
+  a4:	85 b3       	in	r24, 0x15	; 21
+  a6:	27 b5       	in	r18, 0x27	; 39
+  a8:	90 e0       	ldi	r25, 0x00	; 0
+  aa:	02 c0       	rjmp	.+4      	; 0xb0 <main+0x30>
+  ac:	95 95       	asr	r25
+  ae:	87 95       	ror	r24
+  b0:	2a 95       	dec	r18
+  b2:	e2 f7       	brpl	.-8      	; 0xac <main+0x2c>
+  b4:	80 fd       	sbrc	r24, 0
+  b6:	04 c0       	rjmp	.+8      	; 0xc0 <main+0x40>
+				
+			PORTB = _BV(PINB2);// Sets Port B as output using _bv operation (bit value)
+			
+			interrupt_counter = 0;// Sets counter to zero
+			
+			while(interrupt_counter < 50 )// Loop for condition if counter is less than enter value (50)
+  b8:	42 33       	cpi	r20, 0x32	; 50
+  ba:	51 05       	cpc	r21, r1
+  bc:	9c f3       	brlt	.-26     	; 0xa4 <main+0x24>
+  be:	12 c0       	rjmp	.+36     	; 0xe4 <main+0x64>
+					
+				if (TIFR0 & (1 << OCR0A)) // Loop condition checking for interrupt flag, and value Compare register
+					
+					{
+					
+					interrupt_counter +=1; // Increments our interrupt counter
+  c0:	4f 5f       	subi	r20, 0xFF	; 255
+  c2:	5f 4f       	sbci	r21, 0xFF	; 255
+					
+					TIFR0 = 0x01;// Resets flag to 1
+  c4:	35 bb       	out	0x15, r19	; 21
+				
+					TCNT0 = 0x00;//Resets our clock to zero
+  c6:	16 bc       	out	0x26, r1	; 38
+				
+			PORTB = _BV(PINB2);// Sets Port B as output using _bv operation (bit value)
+			
+			interrupt_counter = 0;// Sets counter to zero
+			
+			while(interrupt_counter < 50 )// Loop for condition if counter is less than enter value (50)
+  c8:	42 33       	cpi	r20, 0x32	; 50
+  ca:	51 05       	cpc	r21, r1
+  cc:	59 f0       	breq	.+22     	; 0xe4 <main+0x64>
+			
+				{
+					
+				if (TIFR0 & (1 << OCR0A)) // Loop condition checking for interrupt flag, and value Compare register
+  ce:	85 b3       	in	r24, 0x15	; 21
+  d0:	27 b5       	in	r18, 0x27	; 39
+  d2:	90 e0       	ldi	r25, 0x00	; 0
+  d4:	02 c0       	rjmp	.+4      	; 0xda <main+0x5a>
+  d6:	95 95       	asr	r25
+  d8:	87 95       	ror	r24
+  da:	2a 95       	dec	r18
+  dc:	e2 f7       	brpl	.-8      	; 0xd6 <main+0x56>
+  de:	80 ff       	sbrs	r24, 0
+  e0:	e1 cf       	rjmp	.-62     	; 0xa4 <main+0x24>
+  e2:	ee cf       	rjmp	.-36     	; 0xc0 <main+0x40>
+					
+				}
+			}
+
+		}
+		PORTB = 0x00;// After desired time period turn LED off again as long as button is not activated
+  e4:	15 b8       	out	0x05, r1	; 5
+	}
+  e6:	d8 cf       	rjmp	.-80     	; 0x98 <main+0x18>
+
+000000e8 <_exit>:
+  e8:	f8 94       	cli
+
+000000ea <__stop_program>:
+  ea:	ff cf       	rjmp	.-2      	; 0xea <__stop_program>
